@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * @author downey
+ * @author Aishwarya Rameshkumar
  * @param <E>: Type of the elements in the List.
  *
  */
@@ -39,8 +39,11 @@ public class MyArrayList<E> implements List<E> {
 		mal.add(2);
 		mal.add(3);
 		System.out.println(Arrays.toString(mal.toArray()) + " size = " + mal.size);
+		mal.add(3, 5);
+		System.out.println(Arrays.toString(mal.toArray()) + " size = " + mal.size);
+		System.out.println(Arrays.toString(mal.toArray()) + " contains = " + mal.contains(10));
 		
-		mal.remove(new Integer(2));
+		mal.remove(new Integer(10));
 		System.out.println(Arrays.toString(mal.toArray()) + " size = " + mal.size);
 	}
 
@@ -63,6 +66,23 @@ public class MyArrayList<E> implements List<E> {
 			throw new IndexOutOfBoundsException();
 		}
 		// TODO: fill in the rest of this method
+		E[] bigger = (E[]) new Object[array.length*2];
+		if (index == 0){
+			System.arraycopy(array, 0, bigger, 1, array.length);
+			array = bigger;
+		}
+		else if (index == size){
+			System.arraycopy(array, 0, bigger, 0, array.length);
+			array = bigger;
+		}
+		else{
+			System.arraycopy(array, 0, bigger, 0, index);
+			System.arraycopy(array, index, bigger, index+1, array.length-index);
+			array = bigger;
+		}
+
+		array[index] = element;
+		size++;
 	}
 
 	@Override
@@ -112,7 +132,25 @@ public class MyArrayList<E> implements List<E> {
 	@Override
 	public int indexOf(Object target) {
 		// TODO: fill in this method
-		return 0;
+		int indexObj = -1;
+		for(int i=0; i<size; i++){
+			indexObj++;
+			if (target == null){
+				if (array[indexObj] == null) {
+					return indexObj;
+				}
+			}
+			else {
+				if (array[indexObj] == null) {
+					throw new NullPointerException("An element of the array is NULL");
+				}
+				if (array[indexObj].equals(target)){
+					return indexObj;
+				}
+			}
+
+		}
+		return -1;
 	}
 
 	/** Checks whether an element of the array is the target.
@@ -183,7 +221,27 @@ public class MyArrayList<E> implements List<E> {
 	@Override
 	public E remove(int index) {
 		// TODO: fill in this method.
-		return null;
+		E returnElem = array[index];
+		if(index<0 || index>=size){
+			throw new IndexOutOfBoundsException("The given index is out of bounds");
+		}
+		if(index == 0){
+			for(int i = 0; i<size-1; i++){
+				array[i] = array[i+1];
+			}
+		}
+		else if(index == size-1){
+			array[size-1] = null;
+		}
+		else{
+			for(int i = index; i<size-1; i++){
+				array[i] = array[i+1];
+			}
+			array[size-1] = null;
+		}
+
+		size--;
+		return returnElem;
 	}
 
 	@Override
@@ -203,7 +261,12 @@ public class MyArrayList<E> implements List<E> {
 	@Override
 	public E set(int index, E element) {
 		// TODO: fill in this method.
-		return null;
+		if(index>=size){
+			throw new IndexOutOfBoundsException("Index is out of bounds");
+		}
+		E retElem = array[index];
+		array[index] = element;
+		return retElem;
 	}
 
 	@Override

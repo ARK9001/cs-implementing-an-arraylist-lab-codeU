@@ -66,7 +66,6 @@ public class MyArrayListTest {
 	@Test
 	public void testAddIntT() {
 		mal.add(1, 5);
-		//System.out.println(Arrays.toString(mal.toArray()));
 		assertThat(mal.get(1), is(new Integer(5)));
 		assertThat(mal.size(), is(4));
 		
@@ -76,6 +75,7 @@ public class MyArrayListTest {
 		} catch (IndexOutOfBoundsException e) {} // good
 
 		try {
+			//System.out.println(Arrays.toString(mal.toArray()));
 		    mal.set(4, 0);
 		    fail();
 		} catch (IndexOutOfBoundsException e) {} // good
